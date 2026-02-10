@@ -49,7 +49,7 @@ pip install scapy
 
 ### Uso
 ```bash
-git clone https://github.com/tuusuario/DHCP-Spoofing.git
+git clone (https://github.com/j4vi404/DHCP-Spoofing-Attack-.git)
 cd DHCP-Spoofing
 chmod +x dhcp_spoofing.py
 sudo python3 dhcp_spoofing.py
@@ -145,9 +145,9 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
 - **Cloud My House**: Conexión a Internet
 - **Kali Linux Atacante**: Máquina atacante con servidor DHCP malicioso
 - **SW-Cloud**: Switch de conexión a cloud
-- **SW-1 (ARISTA)**: Switch principal izquierda
-- **SW-2 (ARISTA)**: Switch segmento inferior izquierdo
-- **SW-3 (ARISTA)**: Switch segmento derecho
+- **SW-1**: Switch principal izquierda
+- **SW-2**: Switch segmento inferior izquierdo
+- **SW-3**: Switch segmento derecho
 - **R-SD DHCP**: Router con servidor DHCP legítimo
 - **PNET**: Proveedor de Internet (ISP)
 - **USER**: Clientes víctimas (3 dispositivos)
@@ -240,12 +240,13 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
 | **Arista** | **7050/7280/7500** | **EOS 4.x+** | **✅ Completo** |
 | Cisco | Catalyst 2960/3560 | IOS 15.0+ | ✅ Completo |
 | HP | ProCurve 2530/2920 | KB.16.x | ✅ Completo |
+------------------------------------------------------------------
 
 #### Routers
 | Fabricante | Modelos Soportados | Versión OS | Estado |
 |------------|-------------------|------------|--------|
 | Cisco | ISR 1900/2900/4000 | IOS 15.0+ | ✅ Completo |
-| Arista | 7500R/7280R | EOS 4.x+ | ✅ Completo |
+|-------------------------------------------------------
 
 ### Conectividad Requerida
 - ✅ Acceso SSH (puerto 22) a dispositivos de red
@@ -281,14 +282,14 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
 Switch(config)# ip dhcp snooping
 
 ! Activar en VLANs específicas
-Switch(config)# ip dhcp snooping vlan 10,20
+Switch(config)# ip dhcp snooping vlan 20
 
 ! Configurar puerto trust (servidor DHCP legítimo)
-Switch(config)# interface GigabitEthernet0/24
+Switch(config)# interface Ethernet0/1
 Switch(config-if)# ip dhcp snooping trust
 
 ! Configurar puertos untrust (clientes)
-Switch(config)# interface range GigabitEthernet0/1-23
+Switch(config)# interface range Ethernet0/1-5
 Switch(config-if-range)# ip dhcp snooping limit rate 10
 
 ! Habilitar Option-82
@@ -299,7 +300,7 @@ Switch(config)# ip dhcp snooping information option
 **Previene spoofing de direcciones IP basándose en DHCP Snooping**
 
 ```cisco
-Switch(config)# interface range GigabitEthernet0/1-23
+Switch(config)# interface range Ethernet0/1-5
 Switch(config-if-range)# ip verify source
 Switch(config-if-range)# ip verify source port-security
 ```
@@ -308,23 +309,23 @@ Switch(config-if-range)# ip verify source port-security
 **Limita direcciones MAC permitidas por puerto**
 
 ```cisco
-Switch(config)# interface range GigabitEthernet0/1-23
-Switch(config-if-range)# switchport port-security
-Switch(config-if-range)# switchport port-security maximum 2
-Switch(config-if-range)# switchport port-security violation restrict
-Switch(config-if-range)# switchport port-security mac-address sticky
+SW-3(config)# interface range Ethernet0/1-5
+SW-3(config-if-range)# switchport port-security
+SW-3(config-if-range)# switchport port-security maximum 2
+SW-3(config-if-range)# switchport port-security violation restrict
+SW-3(config-if-range)# switchport port-security mac-address sticky
 ```
 
 #### 4. Dynamic ARP Inspection (DAI)
 **Previene envenenamiento ARP relacionado con DHCP Spoofing**
 
 ```cisco
-Switch(config)# ip arp inspection vlan 10,20
-Switch(config)# ip arp inspection validate src-mac dst-mac ip
+SW-3(config)# ip arp inspection vlan 20
+SW-3(config)# ip arp inspection validate src-mac dst-mac ip
 
 ! Puerto trust para gateway
-Switch(config)# interface GigabitEthernet0/24
-Switch(config-if)# ip arp inspection trust
+SW-3(config)# interface GigabitEthernet0/24
+SW-3(config-if)# ip arp inspection trust
 ```
 
 #### 5. Autenticación 802.1X
@@ -332,18 +333,18 @@ Switch(config-if)# ip arp inspection trust
 
 ```cisco
 ! Habilitar AAA
-Switch(config)# aaa new-model
-Switch(config)# aaa authentication dot1x default group radius
+SW-3(config)# aaa new-model
+SW-3(config)# aaa authentication dot1x default group radius
 
 ! Configurar RADIUS
-Switch(config)# radius server RADIUS-SERVER
-Switch(config-radius-server)# address ipv4 192.168.1.10 auth-port 1812
-Switch(config-radius-server)# key SecureKey123
+SW-3(config)# radius server RADIUS-SERVER
+SW-3(config-radius-server)# address ipv4 192.168.1.10 auth-port 1812
+SW-3(config-radius-server)# key SecureKey123
 
 ! Habilitar 802.1X en puertos
-Switch(config)# interface range GigabitEthernet0/1-23
-Switch(config-if-range)# authentication port-control auto
-Switch(config-if-range)# dot1x pae authenticator
+SW-3h(config)# interface range GigabitEthernet0/1-23
+SW-3(config-if-range)# authentication port-control auto
+SW-3(config-if-range)# dot1x pae authenticator
 ```
 
 ---
@@ -363,31 +364,31 @@ Switch(config-if-range)# dot1x pae authenticator
 
 ### Plan de Respuesta a Incidentes
 
-#### FASE 1: DETECCIÓN (0-15 minutos)
+#### FASE 1: DETECCIÓN 
 1. Sistema detecta servidor DHCP no autorizado
 2. Alerta automática al equipo de seguridad
 3. Revisión de logs DHCP Snooping
 4. Identificación del puerto/dispositivo malicioso
 
-#### FASE 2: CONTENCIÓN (15-30 minutos)
+#### FASE 2: CONTENCIÓN 
 1. **Shutdown inmediato** del puerto afectado
 2. Aislar segmento de red comprometido
 3. Preservar evidencia (capturas de tráfico)
 4. Revisar clientes que recibieron configuración falsa
 
-#### FASE 3: ERRADICACIÓN (30-60 minutos)
+#### FASE 3: ERRADICACIÓN 
 1. Identificar y eliminar servidor DHCP malicioso
 2. Liberar IPs asignadas incorrectamente
 3. Forzar renovación DHCP en clientes afectados
 4. Verificar configuraciones de red
 
-#### FASE 4: RECUPERACIÓN (1-2 horas)
+#### FASE 4: RECUPERACIÓN 
 1. Restaurar configuración DHCP correcta en clientes
 2. Verificar conectividad de todos los dispositivos
 3. Confirmar que gateway y DNS son correctos
 4. Monitoreo intensivo durante 24-48 horas
 
-#### FASE 5: LECCIONES APRENDIDAS (1 semana)
+#### FASE 5: LECCIONES APRENDIDAS 
 1. Documentar el incidente completo
 2. Revisar efectividad de controles DHCP Snooping
 3. Actualizar políticas de seguridad
@@ -403,15 +404,6 @@ El autor no se hace responsable del mal uso de esta herramienta. Al utilizar est
 
 ---
 
-**📚 Referencias**
-- RFC 2131 - Dynamic Host Configuration Protocol
-- RFC 3046 - DHCP Relay Agent Information Option
-- Cisco DHCP Snooping Configuration Guide
-- NIST Cybersecurity Framework
 
-**📧 Contacto**
-Para reportes de seguridad o consultas: [Tu Email]
-
----
 
 *Última actualización: Febrero 2026*
