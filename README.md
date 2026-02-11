@@ -21,24 +21,23 @@ Las capturas incluidas en este repositorio documentan el proceso completo del la
 
 - **Topología de red del escenario**
   
-  ![Topología](screenshots/topologia.png)
+<img width="1689" height="919" alt="image" src="https://github.com/user-attachments/assets/e5d58a9f-e80f-44e3-8f37-d07e13602a25" />
 
-- **Ejecución del ataque DHCP Spoofing**
-  
-  ![Ataque DHCP](screenshots/ataque_dhcp.png)
+---
 
 - **Servidor DHCP malicioso en ejecución**
-  
-  ![DHCP Rogue](screenshots/dhcp_rogue.png)
+ <img width="861" height="877" alt="image" src="https://github.com/user-attachments/assets/1e873d02-9552-4ffa-a142-e8ad78c65dd4" />
 
+---
 - **Tráfico DHCP interceptado**
-  
-  ![Wireshark](screenshots/wireshark_capture.png)
+<img width="849" height="180" alt="image" src="https://github.com/user-attachments/assets/dda7fe71-75da-4bc9-a858-b3bb51d04dbe" />
+
+---
 
 - **Cliente recibiendo configuración maliciosa**
-  
-  ![Cliente](screenshots/cliente_infectado.png)
+<img width="1642" height="574" alt="Screenshot 2026-02-10 185523" src="https://github.com/user-attachments/assets/298f8e7a-cd2d-43b3-aac7-f2fd11f605a6" />
 
+---
 ## DHCP Spoofing - Rogue DHCP Server Attack
 Script de Python que utiliza Scapy para realizar ataques de DHCP Spoofing mediante un servidor DHCP malicioso que intercepta y responde a solicitudes DHCP antes que el servidor legítimo.
 
