@@ -4,6 +4,10 @@
 
 Herramienta automatizada para demostración de ataques DHCP Spoofing en entornos de laboratorio controlados
 
+---
+Video demostrativo: https://youtu.be/2J1G10wh3Qk
+---
+
 ## 📋 Tabla de Contenidos
 - [Objetivo del Script](#-objetivo)
 - [Características Principales](#características)
