@@ -247,7 +247,6 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
 | Cisco | ISR 1900/2900/4000 | IOS 15.0+ | ✅ Completo |
 -------------------------------------------------------
 
----
 ## 🛡️ Medidas de Mitigación
 
 ### Análisis de Riesgos y Controles - DHCP Spoofing
