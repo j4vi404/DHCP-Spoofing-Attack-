@@ -16,6 +16,19 @@ Herramienta automatizada para demostración de ataques DHCP Spoofing en entornos
 ## 🎯 Objetivo
 El objetivo de este script es simular, en un entorno de laboratorio controlado, un ataque de **DHCP Spoofing** para interceptar peticiones DHCP legítimas y asignar configuraciones de red maliciosas a los clientes, posicionando al atacante como **Man-in-the-Middle**, con fines exclusivamente educativos y de análisis de seguridad.
 
+## Autor
+**ALEXIS JAVIER CRUZ MINYETE**
+
+---
+
+## Reporte de Seguridad
+Durante la ejecución del laboratorio se identificó que la red evaluada carece de mecanismos básicos de protección DHCP, lo que permitió la ejecución exitosa de un ataque de DHCP Spoofing. La ausencia de DHCP Snooping, validación de servidores autorizados y monitoreo de asignaciones representa un riesgo crítico para la integridad de la configuración de red.
+
+El impacto principal del ataque es la capacidad de redirigir todo el tráfico de los clientes a través del atacante, permitiendo ataques Man-in-the-Middle, captura de credenciales y suplantación de servicios. En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no autorizado a información sensible y comprometer la seguridad de toda la red.
+
+La implementación de controles como DHCP Snooping, Port Security, validación de servidores DHCP autorizados y monitoreo activo permitiría reducir considerablemente la superficie de ataque.
+
+---
 ## 🖼️ Capturas de Pantalla
 Las capturas incluidas en este repositorio documentan el proceso completo del laboratorio:
 
@@ -98,47 +111,7 @@ Este ataque puede ser detectado mediante:
 - Análisis de logs de asignaciones DHCP
 - IDS/IPS configurados
 
-## Autor
-**ALEXIS JAVIER CRUZ MINYETE**
-
 ---
-
-## Reporte de Seguridad
-Durante la ejecución del laboratorio se identificó que la red evaluada carece de mecanismos básicos de protección DHCP, lo que permitió la ejecución exitosa de un ataque de DHCP Spoofing. La ausencia de DHCP Snooping, validación de servidores autorizados y monitoreo de asignaciones representa un riesgo crítico para la integridad de la configuración de red.
-
-El impacto principal del ataque es la capacidad de redirigir todo el tráfico de los clientes a través del atacante, permitiendo ataques Man-in-the-Middle, captura de credenciales y suplantación de servicios. En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no autorizado a información sensible y comprometer la seguridad de toda la red.
-
-La implementación de controles como DHCP Snooping, Port Security, validación de servidores DHCP autorizados y monitoreo activo permitiría reducir considerablemente la superficie de ataque.
-
----
-
-## 🌐 Topología de Red
-
-### Diagrama de Topología
-
-```
-                            Cloud My House
-                                  |
-                   +--------------+---------------+
-                   |                              |
-                e1/0                            e0/1
-          Kali Linux Atacante                 SW-Cloud
-                e0/0                            e0/0
-                   |                              |
-                e1/0                            e0/1
-                 SW-1 ----------PNET----------- R-SD DHCP
-               (ARISTA)                         e0/0
-                e0/3 \                            |
-                      \                         e1/0
-                    e0/0                          |
-                     SW-2                       SW-3
-                   (ARISTA)   e0/2    e0/4    (ARISTA)
-                    e0/2 \     |       |       / e1/2
-                          \  e0/0    e0/0     /  e1/1
-                           \  |       |      /   e1/3
-                            USER    USER    USER
-                                   (eth0)
-```
 
 **Elementos de la red:**
 - **Cloud My House**: Conexión a Internet
@@ -316,7 +289,7 @@ SW-3(config)# ip arp inspection vlan 20
 SW-3(config)# ip arp inspection validate src-mac dst-mac ip
 
 ! Puerto trust para gateway
-SW-3(config)# interface GigabitEthernet0/24
+SW-3(config)# interface Ethernet0/1-5
 SW-3(config-if)# ip arp inspection trust
 ```
 
@@ -334,7 +307,7 @@ SW-3(config-radius-server)# address ipv4 192.168.1.10 auth-port 1812
 SW-3(config-radius-server)# key SecureKey123
 
 ! Habilitar 802.1X en puertos
-SW-3h(config)# interface range GigabitEthernet0/1-23
+SW-3h(config)# interface range Ethernet0/1-5
 SW-3(config-if-range)# authentication port-control auto
 SW-3(config-if-range)# dot1x pae authenticator
 ```
