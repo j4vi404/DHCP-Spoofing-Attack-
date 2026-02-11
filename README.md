@@ -187,9 +187,8 @@ Este ataque puede ser detectado mediante:
 ### Configuración de Red
 | Parámetro | Valor | Descripción |
 |-----------|-------|-------------|
-| Red Clientes | 192.168.1.0/24 | VLAN 10 - Segmento objetivo |
-| Red Servidores | 192.168.2.0/24 | VLAN 20 - Segmento administrativo |
-| Enlace P2P | 10.0.0.0/30 | Conexión entre R1 y R2 |
+| Red Clientes | 15.0.7.0/24 | VLAN 20 - Segmento objetivo |
+| R-SD DHCP | -| VLAN 20 - Segmento administrativo |
 | VLAN Nativa | 888 | VLAN para tráfico no etiquetado |
 
 ### Parámetros de Ataque
@@ -198,25 +197,15 @@ Este ataque puede ser detectado mediante:
 | Parámetro | Valor | Descripción |
 |-----------|-------|-------------|
 | Interfaz | eth0 | Interfaz de red del atacante |
-| Gateway Falso | 192.168.1.50 | IP del atacante (gateway malicioso) |
-| DNS Falso | 192.168.1.50 | Servidor DNS malicioso |
-| Pool Inicio | 192.168.1.100 | Inicio del rango de IPs a asignar |
-| Pool Fin | 192.168.1.200 | Fin del rango de IPs a asignar |
+| Gateway Falso | 10.0.0.1 |  (gateway malicioso) |
+| DNS Falso | 8.8.8.8 | Servidor DNS malicioso |
+| Pool Inicio | 10.0.0.100 | Inicio del rango de IPs a asignar |
+| Pool Fin | 10.0.0.150 | Fin del rango de IPs a asignar |
 | Lease Time | 3600 segundos | Tiempo de concesión DHCP |
 | Puerto DHCP | 67/68 | Puertos estándar DHCP |
 | Protocolo | UDP | Protocolo de transporte |
-
+---------------------------------------------
 ---
-
-### Dispositivos de Red Compatibles
-
-#### Switches
-| Fabricante | Modelos Soportados | Versión OS | Estado |
-|------------|-------------------|------------|--------|
-| **Arista** | **7050/7280/7500** | **EOS 4.x+** | **✅ Completo** |
-| Cisco | Catalyst 2960/3560 | IOS 15.0+ | ✅ Completo |
-| HP | ProCurve 2530/2920 | KB.16.x | ✅ Completo |
-------------------------------------------------------------------
 
 #### Routers
 | Fabricante | Modelos Soportados | Versión OS | Estado |
