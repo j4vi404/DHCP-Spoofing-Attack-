@@ -50,8 +50,8 @@ pip install scapy
 ```bash
 git clone (https://github.com/j4vi404/DHCP-Spoofing-Attack-.git)
 cd DHCP-Spoofing
-chmod +x dhcp_spoofing.py
-sudo python3 dhcp_spoofing.py
+chmod +x DHCP_spoofing.py
+sudo python3 DHCP_spoofing.py
 ```
 
 ## Características
@@ -127,7 +127,7 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
                    |                              |
                 e1/0                            e0/1
                  SW-1 ----------PNET----------- R-SD DHCP
-               (ARISTA)         (ISP)           e0/0
+               (ARISTA)                         e0/0
                 e0/3 \                            |
                       \                         e1/0
                     e0/0                          |
@@ -245,15 +245,9 @@ La implementación de controles como DHCP Snooping, Port Security, validación d
 | Fabricante | Modelos Soportados | Versión OS | Estado |
 |------------|-------------------|------------|--------|
 | Cisco | ISR 1900/2900/4000 | IOS 15.0+ | ✅ Completo |
-|-------------------------------------------------------
-
-### Conectividad Requerida
-- ✅ Acceso SSH (puerto 22) a dispositivos de red
-- ✅ Acceso físico a la red objetivo
-- ⚠️ Acceso Telnet (puerto 23) - **NO RECOMENDADO** Solo para pruebas
+-------------------------------------------------------
 
 ---
-
 ## 🛡️ Medidas de Mitigación
 
 ### Análisis de Riesgos y Controles - DHCP Spoofing
